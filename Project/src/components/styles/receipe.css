@@ -1,0 +1,19 @@
+/* src/pages/RecipePage.css */
+.recipe-content {
+    font-size: 1rem;
+    line-height: 1.6;
+    color:#4A90E2;
+    
+}
+
+.bold-ingredient {
+    color: #000000; /* Example color for ingredients */
+    font-weight: bold;
+}
+
+.italic-instruction {
+    color: #E94E77; /* Example color for instructions */
+    font-style: italic;
+}
+
+/* Add more styles as needed */

@@ -1,37 +1,38 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function GeneratedText() {
-    const [data, setData] = useState({ title: '', content: [] });
+    const [data, setData] = useState({ title: '', content: '' });
 
     useEffect(() => {
         fetch('http://localhost:3000/api/generated-text')
             .then((response) => {
+                console.log("API response:", response); 
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
             .then((data) => {
-                // Ensure content is an array
+                console.log("Parsed data:", data); // Check if data is parsed correctly
                 setData({
                     title: data.title,
-                    content: Array.isArray(data.content) ? data.content : [data.content],
+                    content: data.content.join('<br>'), // Join content parts into a single string with <br> tags
                 });
             })
             .catch((error) => console.error('Error fetching data:', error));
     }, []);
     
-          
+    
     return (
         <div>
+            {/* Render the title */}
             <h1 className="title">{data.title}</h1>
-            <div className="content">
-                {data.content.map((line, index) => (  
-                    <div key={index} className="card">
-                        {line}
-                    </div>
-                ))}
-            </div>
+            
+            {/* Render the content using dangerouslySetInnerHTML */}
+            <div
+                className="content"
+                dangerouslySetInnerHTML={{ __html: data.content }}
+            />
         </div>
     );
 }

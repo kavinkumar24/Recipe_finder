@@ -7,92 +7,61 @@ dotenv.config();
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 const port = 3000;
-let generatedText = '';
 
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 
-async function run() {
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    const prompt = "Write a receive for bread omlette";
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    let text = response.text().toString();
-    
-    // Replace '**text**' with '<b>text</b>'
-    text = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
-    // Remove single stars
-    text = text.replace(/\*/g, '');
+let generatedText = { title: '', content: '' };
 
-    // Split text into title and content
-    const [title, ...contentParts] = text.split('\n');
-    const content = contentParts.join('<br>');
-
-    generatedText = {
-        title: title,
-        content: content.replace(/(?:\r\n|\r|\n)/g, '<br>')
-    };
-
-    console.log(generatedText);
-}
-
-run();
-
-app.get('/', (req, res) => {
-    res.send(`
-        
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Document</title>
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                }
-                .title {
-                    font-weight: bold;
-                    font-size: 24px;
-                    margin-bottom: 20px;
-                }
-                .card {
-                    border: 1px solid #ddd;
-                    border-radius: 5px;
-                    padding: 15px;
-                    margin: 10px 0;
-                    background-color: #f9f9f9;
-                }
-                .content {
-                    font-weight: normal;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="title">${generatedText.title}</div>
-            <div class="content">
-                ${generatedText.content.split('<br>').map(line => `<div class="card">${line}</div>`).join('')}
-            </div>
-            <script>
-                const text = "${generatedText.content}";
-                console.log('jj', text); 
-            </script>
-        </body>
-        </html>
-    `);
-});
-
-app.get('/api/generated-text', async (req, res) => {
+app.post('/api/generate-recipe', async (req, res) => {
     try {
-        await run();
-        const contentArray = generatedText.content.split('<br>');
-        res.json({ title: generatedText.title, content: contentArray });
+        const { title } = req.body;
+        const prompt = `Write a recipe for ${title} in minimal`;
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        let text = response.text().toString();
+
+        // Process and format the text
+        text = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\*/g, '');
+        const [recipeTitle, ...contentParts] = text.split('\n');
+        const content = contentParts.join('<br>');
+
+        // Update global variable
+        generatedText = {
+            title: recipeTitle,
+            content: content
+        };
+
+        console.log('Generated Text:', generatedText); // Log the generated text
+
+        res.json({
+            title: recipeTitle,
+            content: content.replace(/(?:\r\n|\r|\n)/g, '<br>')
+        });
     } catch (error) {
-        console.error('Error generating text:', error);
-        res.status(500).json({ error: 'Failed to generate text' });
+        console.error('Error generating recipe:', error);
+        res.status(500).json({ error: 'Failed to generate recipe' });
     }
 });
 
+app.get('/api/generated-text', (req, res) => {
+    try {
+        console.log('Fetching Generated Text:', generatedText); 
+
+        if (!generatedText || !generatedText.title || !generatedText.content) {
+            throw new Error('Generated text is not defined or empty');
+        }
+
+        const contentArray = generatedText.content.split('<br>');
+        res.json({ title: generatedText.title, content: contentArray });
+    } catch (error) {
+        console.error('Error fetching generated text:', error);
+        res.status(500).json({ error: 'Failed to generate text' });
+    }
+});
 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);

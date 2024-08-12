@@ -21,3 +21,36 @@
     font-weight: 700;
     font-style: normal;
   }
+
+  /* src/pages/RecipePage.css */
+.recipe-content {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.ingredient-heading {
+  color: #4A90E2; /* Example color for ingredient section */
+  font-weight: bold;
+}
+
+.instruction-heading {
+  color: #E94E77; /* Example color for instruction section */
+  font-weight: bold;
+}
+
+.tips-heading {
+  color: #50E3C2; /* Example color for tips section */
+  font-weight: bold;
+}
+
+.ingredient {
+  color: #333;
+}
+
+.instruction-step {
+  color: #666;
+}
+
+.tip {
+  color: #999;
+}

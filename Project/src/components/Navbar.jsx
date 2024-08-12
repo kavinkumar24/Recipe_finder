@@ -26,12 +26,12 @@ function Navbar() {
         <ul className='flex-grow flex justify-start md:ml-16'>
           <li className='p-4  w-20 h-10 justify-center items-center pt-2 text-gray-500  duration-200 cursor-pointer font-semibold hover:text-black'>Home</li>
           <li className='p-4  w-20 h-10 justify-center items-center pt-2 text-gray-500  duration-200 cursor-pointer font-semibold hover:text-black'>menu</li>
-          <li className='p-4  w-20 h-10 justify-center items-center pt-2 text-gray-500  duration-200 cursor-pointer font-semibold hover:text-black'>wishlist</li>
+          <li className='md:block lg:block p-4  w-20 h-10 justify-center items-center pt-2 text-gray-500  duration-200 cursor-pointer font-semibold hover:text-black sm:block hidden'>wishlist</li>
         </ul>
 
         {/* Right side - Sign Up and Login buttons */}
         <ul className='hidden md:flex items-center gap-[2vw]'>
-      <li className='flex items-center p-4 mx-2 w-30 h-10 justify-center text-white rounded-xl hover:bg-white shadow-2xl hover:shadow duration-200 cursor-pointer'>
+      <li className='flex items-center p-4 mx-2 w-30 h-10 justify-center text-amber-400 rounded-xl hover:bg-white shadow-2xl hover:shadow duration-200 cursor-pointer hover:text-black'>
         <IoPerson className='mr-2' />Sign Up
       </li>
       <li className='p-4 mx-2 bg-amber-300 w-24 h-10 justify-center items-center pt-2 text-black-600 rounded-xl hover:bg-amber-400 shadow-2xl hover:shadow duration-200 cursor-pointer'>
