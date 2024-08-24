@@ -1,7 +1,7 @@
 import Navbar from "./Navbar";
 import saladBg from "../assets/bg_img.jpg"; 
 import salad from "../assets/Home_page_img1.jpg"; 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RecipeCard from "./Receipe_card";
 import MasalaDosa from '../assets/masala_dosa.jpg'
 import BreadOmlette from '../assets/Bread omlette.jpg'
@@ -9,6 +9,12 @@ import Tikka_Rice from '../assets/tikka_rice.jpg'
 import Hyderabadi_biryani from '../assets/Hyderabadi_biryani.avif'
 
 function Home() {
+    const[theme,setTheme] = useState(
+        localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'
+    )
+    useEffect(() => {
+        localStorage.setItem('theme', theme);
+      }, [theme]);
     const [recipes, setRecipes] = useState([
         {
             image: MasalaDosa, 
@@ -99,8 +105,7 @@ function Home() {
 
     return (
         <>
-        <div className="bg-white  md:min-h-screen lg:min-h-screen relative h-[40%] sm:h-12 lg:h-full shadow-md">
-            {/* Background Oval - Behind the Navbar */}
+        <div className={`  md:min-h-screen lg:min-h-screen relative h-[40%] sm:h-12 lg:h-full shadow-md ${theme==='light'?'bg-white':'bg-slate-800'}`}>
             <div className="absolute inset-0 w-full h-full overflow-hidden z-0 hidden md:block">
                 <div
                     className="absolute right-[-60%] top-0 w-[150%] h-full"
@@ -116,13 +121,13 @@ function Home() {
 
             {/* Navbar - Overlayed on top of the background */}
             <div className="relative z-10">
-                <Navbar />
+                <Navbar theme={theme} dark = {setTheme}/>
             </div>
 
             <div className="container mx-auto px-4 py-20 flex flex-col md:flex-row items-center justify-between ">
                 {/* Left Side - Text and Order Details */}
                 <div className="md:w-1/2 text-center md:text-left z-0">
-                    <h1 className="text-4xl md:text-6xl font-bold text-gray-900">
+                    <h1 className={`text-4xl md:text-6xl font-bold ${theme==='light'?'text-gray-900':'text-slate-400'}`}>
                         Find your <br /> favourite Foods receipe
                     </h1>
                     <p className="mt-4 text-gray-500 text-sm md:text-base">
@@ -153,19 +158,22 @@ function Home() {
         
         </div>
             {/* Recipe Cards */}
-            <div className="px-20 text-3xl font-bold mt-10">
-            <h1>Receipes:</h1>
+            <div className={`${theme==='light'?'bg-white':'bg-slate-800'}`}>
+            <div className="px-20 text-3xl font-bold">
+            <h1 className={`top-11 relative ${theme==='light'?'text-gray-600':'text-gray-400'}`}>Receipes:</h1>
             </div>
-            <div className="grid grid-cols-1 mt-0 sm:grid-cols-2 lg:grid-cols-4 lg:grid-y-20 md:gap-2 gap-6 p-6 ml-10 sm:mt-16 lg:mt-10">
+            <div className="grid grid-cols-1 mt-0 sm:grid-cols-2 lg:grid-cols-4 lg:grid-y-20 md:gap-2 gap-6 p-6 ml-10 sm:mt-16 lg:mt-10 ">
                 {recipes.map((recipe, index) => (
                     <RecipeCard 
                         key={index}
                         image={recipe.image}
                         title={recipe.title}
                         description={recipe.description}
+                        theme={theme}
                         onClick={() => fetchRecipe(recipe.title, index)}
                     />
                 ))}
+            </div>
             </div>
             </>
     );

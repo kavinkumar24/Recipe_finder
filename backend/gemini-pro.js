@@ -18,7 +18,7 @@ let generatedText = { title: '', content: '' };
 app.post('/api/generate-recipe', async (req, res) => {
     try {
         const { title } = req.body;
-        const prompt = `Write a recipe for ${title} in minimal`;
+        const prompt = `Write a recipe for ${title} in only in 4 points `;
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         const result = await model.generateContent(prompt);
         const response = await result.response;
@@ -29,13 +29,11 @@ app.post('/api/generate-recipe', async (req, res) => {
         const [recipeTitle, ...contentParts] = text.split('\n');
         const content = contentParts.join('<br>');
 
-        // Update global variable
         generatedText = {
             title: recipeTitle,
             content: content
         };
 
-        console.log('Generated Text:', generatedText); // Log the generated text
 
         res.json({
             title: recipeTitle,

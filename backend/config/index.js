@@ -26,13 +26,15 @@ app.get('/liked_data',async(req,res)=>{
 })
 app.post("/wishlist", async(req,res)=>{
 try{
-    const{name,desc} = req.body;
+    const{name,desc,img} = req.body;
+    console.log(img)
     if (!name || !desc) {
         return res.status(400).json({ error: "Name and description are required" });
     }
     const newwishlist = new collection({
         name,
-        description:desc
+        description:desc,
+        image:img
     })
 
     await newwishlist.save(); 
