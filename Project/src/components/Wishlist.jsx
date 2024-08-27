@@ -7,7 +7,7 @@ function Wishlist() {
     const[theme,setTheme] = useState('light')
     const handlewishlist_fetch = async(req,res)=>{
         try{
-        const response = await axios.get('http://localhost:7000/liked_data');
+        const response = await axios.get('https://recipe-finder-backend-pabt.onrender.com/liked_data');
         if(response.status==200&& Array.isArray(response.data.data)){
             const nameSet = new Set();
 

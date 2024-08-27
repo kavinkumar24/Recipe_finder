@@ -38,7 +38,8 @@ function RecipeCard({ image, title, description, onClick,theme }) {
         setLiked_data(newLikedData);
 
         try {
-            const data_send = await axios.post('http://localhost:7000/wishlist', newLikedData);
+            
+            const data_send = await axios.post('https://recipe-finder-backend-pabt.onrender.com/wishlist', newLikedData);
             if (data_send.status === 200) {
                 console.log("Success");
             }
