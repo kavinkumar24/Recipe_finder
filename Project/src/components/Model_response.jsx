@@ -4,7 +4,7 @@ function GeneratedText() {
     const [data, setData] = useState({ title: '', content: '' });
 
     useEffect(() => {
-        fetch('http://localhost:3000/api/generated-text')
+        fetch('https://naturals-emart-project.onrender.com/api/generated-text')
             .then((response) => {
                 console.log("API response:", response); 
                 if (!response.ok) {
