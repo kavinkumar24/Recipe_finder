@@ -19,7 +19,7 @@ function RecipePage() {
     useEffect(() => {
         const fetchRecipe = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/api/generate-recipe`, {
+                const response = await fetch(`https://naturals-emart-project.onrender.com/api/generate-recipe`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
